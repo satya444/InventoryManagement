@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.inventory.domain.Inventory;
 
 @Repository
-public class InventoryDAO {
+public class InventoryDAO implements InventoryDAOInterface{
 	/**
 	 * sessionFactory to perform transactions
 	 */
@@ -65,9 +65,8 @@ public class InventoryDAO {
 	 */
 	public void editSave(Inventory song) throws HibernateException{
 		Session session = this.sessionFactory.openSession();
-		System.out.println("UPDATING THIS VALUD" + song.getQuantityInStock());
 		Query query = session
-				.createQuery("update Inventory set songName = :songName , artistName = :artistName , albumName = :albumName, quantityInStock = :quantityInStock , unitPrice = :unitPrice , categoryName = :categoryName"
+				.createQuery("update Inventory set songName = :songName , artistName = :artistName , albumName = :albumName, quantityInStock = :quantityInStock , unitPrice = :unitPrice , categoryName = :categoryName, totalPrice= :totalPrice"
 						+ " where id = :id");
 		query.setParameter("songName", song.getSongName());
 		query.setParameter("artistName", song.getArtistName());
@@ -75,6 +74,7 @@ public class InventoryDAO {
 		query.setParameter("quantityInStock", song.getQuantityInStock());
 		query.setParameter("unitPrice", song.getUnitPrice());
 		query.setParameter("categoryName", song.getCategoryName());
+		query.setParameter("totalPrice", song.getTotalPrice());
 		query.setParameter("id", song.getId());
 		query.executeUpdate();
 		System.out.println("updated successfully");

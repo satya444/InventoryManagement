@@ -5,18 +5,17 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.inventory.dao.InventoryDAO;
+import com.inventory.dao.InventoryDAOInterface;
 import com.inventory.domain.Inventory;
 
 @Service
-public class InventoryService {
+public class InventoryService implements InventoryServiceInterface {
 
 	/**
 	 * reference to InventoryDAO
 	 */
 	@Autowired
-	private InventoryDAO inventoryDAO;
+	private InventoryDAOInterface inventoryDAO;
 
 	/**
 	 * obtains list of songs in inventory

@@ -1,11 +1,8 @@
 package com.inventory.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.hibernate.HibernateException;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.inventory.domain.Inventory;
-import com.inventory.service.InventoryService;
+import com.inventory.service.InventoryServiceInterface;
 
 @Controller
 public class MainController {
@@ -25,8 +21,8 @@ public class MainController {
 	/**
 	 * Reference to InventoryService
 	 */
-	@Autowired
-	private InventoryService inventoryService;
+	@Autowired(required=true)
+	private InventoryServiceInterface inventoryService;
 
 	/**
 	 * get all the songs from inventory
