@@ -1,0 +1,28 @@
+DesignPattern 
+
+Followed Spring MVC design pattern along with integration 
+
+model- spring beans
+view- jsp
+control- MainController handling requests
+
+There are 3 modules
+1. Controller Module which interacts with JSPs and requests ServiceModule for service
+2. Service Module which takes the request from ControllerModule and requests DAO for required action
+3. The DAO module receives request from Service Module and interacts with Database for results.
+
+We have this 3 layered design. This design is useful if we were to extend this application. for example, this is a web application. Lets us say we want to implement mobile feature for this application. we can include another service module which handles the requests for mobile application.
+
+Steps to Run and Test the code
+
+Used Tomcat 7 Application server to test this application.
+
+Run the project on server.
+
+1. To test for validations, simply press submit in the home page. we will get the required validations when we do this.
+2. To test for duplicate songName and artistName, try to enter existing songName and artistName. Then it gives the error message in another page.
+3. Test the functionalities
+	a. Add- fill the form and press submit	
+	b. search- enter partial of full songname of artistname you would like to search for
+	c. edit- click on the edit link present in the list. The fields are populated with the song to be edited. Edit the list and submit the form again.
+	d. delete- click on the delete link next to the song to delete that particular song.

@@ -1,0 +1,26 @@
+Directory Structure
+com.inventory is the root directory for all other directories
+
+com.inventory.contoller contains MainController.java file
+com.inventory.service contains InventoryServiceInterface and InventoryService.java file
+com.inventory.dao contains InventoryDAOInterface and InventoryDAO.java file
+com.inventory.annotations contains custom implemented annotations for the purpose of validations. It has CategoryType interface and CategeryTypeValidation.java file.
+
+under WEB-INF/pages, there are list of JSP's 
+listings.jsp is the default homepage
+searchBySongOrArtistName.jsp contains result based on song name of artist name. supports partial name search also
+keyViolation.jsp is invoked incase of exception which occurs when combintion of song name and artist name is not unique
+
+under WEB-INF there are
+messages.properties contains messages for validations
+mvc-dispatcher-servlet.xml 
+web.xml
+
+Used MySQL database for this project. 
+
+QUERY TO CREATE TABLE IN DATABASE
+
+create table inventory(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, songName varchar(20), artistName varchar(20),albumName varchar(20), quantityInStock
+ int(6), unitPrice double(10,3), categoryName varchar(20),totalPrice double(20,3), unique(songName,artistName));
+
+
