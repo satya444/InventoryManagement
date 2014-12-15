@@ -2,6 +2,7 @@ package com.inventory.dao;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,10 +39,9 @@ public class InventoryDAO {
 	 * @param song
 	 *            input form service
 	 */
-	public void insert(Inventory song) {
+	public void insert(Inventory song) throws HibernateException {
 		Session session = this.sessionFactory.openSession();
 		session.save(song);
-
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class InventoryDAO {
 	 * 
 	 * @param song
 	 */
-	public void editSave(Inventory song) {
+	public void editSave(Inventory song) throws HibernateException{
 		Session session = this.sessionFactory.openSession();
 		System.out.println("UPDATING THIS VALUD" + song.getQuantityInStock());
 		Query query = session

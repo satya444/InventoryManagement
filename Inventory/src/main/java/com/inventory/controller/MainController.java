@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.hibernate.HibernateException;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,18 +55,23 @@ public class MainController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String saveInsert(@Valid @ModelAttribute("listings") Inventory song,
 			BindingResult br, Model model) {
-		if (br.hasErrors()) {
-			model.addAttribute("lists", this.inventoryService.getAllListings());
+		try {
+			if (br.hasErrors()) {
+				model.addAttribute("lists",
+						this.inventoryService.getAllListings());
 
-			return "listings";
+				return "listings";
+			}
+			song.setTotalPrice(song.getQuantityInStock() * song.getUnitPrice());
+			if (song.getId() == null) {
+				inventoryService.insertSong(song);
+			} else {
+				inventoryService.edit(song);
+			}
+			return "redirect:/listings";
+		} catch (HibernateException he) {
+			return "/keyViolation";
 		}
-		song.setTotalPrice(song.getQuantityInStock() * song.getUnitPrice());
-		if (song.getId() == null) {
-			inventoryService.insertSong(song);
-		} else {
-			inventoryService.edit(song);
-		}
-		return "redirect:/listings";
 	}
 
 	/**
@@ -77,9 +84,13 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/edit/{id}")
 	public String saveEdit(@PathVariable Integer id, Model model) {
-		model.addAttribute("listings", this.inventoryService.getSong(id));
-		model.addAttribute("lists", this.inventoryService.getAllListings());
-		return "listings";
+		try {
+			model.addAttribute("listings", this.inventoryService.getSong(id));
+			model.addAttribute("lists", this.inventoryService.getAllListings());
+			return "listings";
+		} catch (HibernateException he) {
+			return "keyViolation";
+		}
 	}
 
 	/**
@@ -107,7 +118,6 @@ public class MainController {
 	@RequestMapping(value = "/searchBySongOrArtistName", method = RequestMethod.POST)
 	public String searchBySongName(Model model,
 			@RequestParam("songName") String songName) {
-
 		model.addAttribute("listings", new Inventory());
 		List<Inventory> list = this.inventoryService.search(songName);
 		model.addAttribute("searchBySongOrArtistName", new Inventory());

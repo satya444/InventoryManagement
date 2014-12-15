@@ -2,6 +2,7 @@ package com.inventory.service;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +33,8 @@ public class InventoryService {
 	 * 
 	 * @param song
 	 */
-	public void insertSong(Inventory song) {
-
+	public void insertSong(Inventory song) throws HibernateException{
 		inventoryDAO.insert(song);
-
 	}
 
 	/**
@@ -54,7 +53,7 @@ public class InventoryService {
 	 * 
 	 * @param song
 	 */
-	public void edit(Inventory song) {
+	public void edit(Inventory song) throws HibernateException{
 		inventoryDAO.editSave(song);
 	}
 
