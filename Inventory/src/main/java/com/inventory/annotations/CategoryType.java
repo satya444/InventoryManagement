@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Target( {METHOD, FIELD })
 @Retention(RUNTIME)
 public @interface CategoryType {
-	String message() default "{Enter either Country or Rock or Fonk }";
+	String message() default "Enter either Country or Rock or Funk ";
 
 	Class<?>[] groups() default {};
 
