@@ -70,13 +70,6 @@
 <fieldset>
 <table >
 <tr>
-<th><label for="id">id</label></th>
-<td><sf:input path="id" id="id"/></td>
-
-
-<th><input type="Submit" value="Submit"/></th>
-</tr>
-<tr>
 <th><label for="songName">Enter songName or artistName</label></th>
 <td><sf:input path="songName" id="songName"/></td>
 <th><input type="Submit" value="Submit"/></th>
@@ -119,5 +112,4 @@
     </c:forEach>
     </table>
 </c:if>
-
 </html>
