@@ -12,31 +12,45 @@ import com.inventory.domain.Inventory;
 
 @Repository
 public class InventoryDAO {
+	/**
+	 * sessionFactory to perform transactions
+	 */
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public List<Inventory> list() {
-		Session session = this.sessionFactory.openSession();
-		List<Inventory> personList = session.createQuery("from Inventory")
-				.list();
-		session.close();
-		return personList;
-	}
-
+	/**
+	 * runs HQL select
+	 * 
+	 * @return list of songs in inventory
+	 */
 	public List<Inventory> getAllListings() {
 		Session session = this.sessionFactory.openSession();
-		List<Inventory> personList = session.createQuery("from Inventory")
+		@SuppressWarnings("unchecked")
+		List<Inventory> inventoryList = session.createQuery("from Inventory")
 				.list();
 		session.close();
-		return personList;
+		return inventoryList;
 	}
 
+	/**
+	 * runs HQL insert
+	 * 
+	 * @param song
+	 *            input form service
+	 */
 	public void insert(Inventory song) {
 		Session session = this.sessionFactory.openSession();
 		session.save(song);
 
 	}
 
+	/**
+	 * runs HQL Select for id input
+	 * 
+	 * @param id
+	 *            input from inventoryservice
+	 * @return list of songs in inventory
+	 */
 	public Inventory search(int id) {
 		Session session = this.sessionFactory.openSession();
 
@@ -44,6 +58,11 @@ public class InventoryDAO {
 
 	}
 
+	/**
+	 * runs HQL UPDATE
+	 * 
+	 * @param song
+	 */
 	public void editSave(Inventory song) {
 		Session session = this.sessionFactory.openSession();
 		System.out.println("UPDATING THIS VALUD" + song.getQuantityInStock());
@@ -61,36 +80,44 @@ public class InventoryDAO {
 		System.out.println("updated successfully");
 	}
 
+	/**
+	 * runs HQL delete
+	 * 
+	 * @param id
+	 */
 	public void deleteSong(int id) {
 		Session session = this.sessionFactory.openSession();
-		Query query= session.createQuery("delete Inventory where id = :id");
+		Query query = session.createQuery("delete Inventory where id = :id");
 		query.setParameter("id", id);
 		query.executeUpdate();
 	}
 
-	public List<Inventory> search(int i, String name) {
+	/**
+	 * runs HQL select for given name
+	 * 
+	 * @param name
+	 *            song or artist name from Inventoryservice
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Inventory> search(String name) {
 		Session session = this.sessionFactory.openSession();
 		List<Inventory> list = null;
-		if(i==1){
-			Query query= session.createQuery("from Inventory where lower(songName) like lower(:songName) or lower(artistName) like lower(:artistName)");
-			query.setParameter("songName","%"+ name+"%" );
-			query.setParameter("artistName","%"+ name+"%");
-			 list = query.list();
-		}
-		if(i==2){
-			Query query= session.createQuery("from Inventory where lower(artistName) like lower(:artistName)");
-			query.setParameter("artistName","%"+ name+"%");
-			 list = query.list();
-		}
+		Query query = session
+				.createQuery("from Inventory where lower(songName) like lower(:songName) or lower(artistName) like lower(:artistName)");
+		query.setParameter("songName", "%" + name + "%");
+		query.setParameter("artistName", "%" + name + "%");
+		list = query.list();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Inventory> searchByid(Integer id) {
 		Session session = this.sessionFactory.openSession();
 		List<Inventory> list = null;
-		Query query= session.createQuery("from Inventory where id= :id");
-		query.setParameter("id", id );
-		list=query.list();
+		Query query = session.createQuery("from Inventory where id= :id");
+		query.setParameter("id", id);
+		list = query.list();
 		return list;
 	}
 }

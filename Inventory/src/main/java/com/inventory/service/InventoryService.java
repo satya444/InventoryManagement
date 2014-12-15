@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.inventory.dao.InventoryDAO;
 import com.inventory.domain.Inventory;
@@ -12,31 +11,71 @@ import com.inventory.domain.Inventory;
 @Service
 public class InventoryService {
 
+	/**
+	 * reference to InventoryDAO
+	 */
 	@Autowired
 	private InventoryDAO inventoryDAO;
+
+	/**
+	 * obtains list of songs in inventory
+	 * 
+	 * @return list of songs
+	 */
 	public List<Inventory> getAllListings() {
 		// TODO Auto-generated method stub
 		return inventoryDAO.getAllListings();
 	}
+
+	/**
+	 * adds the song to inventory
+	 * 
+	 * @param song
+	 */
 	public void insertSong(Inventory song) {
-		
+
 		inventoryDAO.insert(song);
-		
+
 	}
-	public Inventory getSong( int id) {
+
+	/**
+	 * returns the song with particular id
+	 * 
+	 * @param id
+	 *            - from search
+	 * @return Inventory object
+	 */
+	public Inventory getSong(int id) {
 		return inventoryDAO.search(id);
 	}
-	public void edit( Inventory song) {
-			inventoryDAO.editSave(song);
+
+	/**
+	 * to edit a song
+	 * 
+	 * @param song
+	 */
+	public void edit(Inventory song) {
+		inventoryDAO.editSave(song);
 	}
-	public void delete(int id){
-			inventoryDAO.deleteSong(id);
+
+	/**
+	 * delete a song
+	 * 
+	 * @param id
+	 *            input form MainController
+	 */
+	public void delete(int id) {
+		inventoryDAO.deleteSong(id);
 	}
-	public List<Inventory> search(int i, String songName) {
-		return inventoryDAO.search(i,songName);
-	}
-	public List<Inventory> searchByid(Integer id) {
-		
-		return inventoryDAO.searchByid(id);
+
+	/**
+	 * search a given songName
+	 * 
+	 * @param songName
+	 *            name from controller
+	 * @return
+	 */
+	public List<Inventory> search(String songName) {
+		return inventoryDAO.search(songName);
 	}
 }

@@ -20,80 +20,99 @@ import com.inventory.service.InventoryService;
 @Controller
 public class MainController {
 
+	/**
+	 * Reference to InventoryService
+	 */
 	@Autowired
 	private InventoryService inventoryService;
 
-	@RequestMapping(value = {"/listings","/"}, method = RequestMethod.GET)
+	/**
+	 * get all the songs from inventory
+	 * 
+	 * @param model
+	 * @return listings page
+	 */
+	@RequestMapping(value = { "/listings", "/" }, method = RequestMethod.GET)
 	public String getdata(Model model) {
 
 		model.addAttribute("listings", new Inventory());
-		
+
 		model.addAttribute("lists", this.inventoryService.getAllListings());
 		return "listings";
 
 	}
 
-
-
-
+	/**
+	 * Save and edit a song to Inventory
+	 * 
+	 * @param song
+	 * @param br
+	 * @param model
+	 * @return listings page
+	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String saveInsert(@Valid @ModelAttribute("listings") Inventory song, BindingResult br,Model model){
-		if(br.hasErrors()){
+	public String saveInsert(@Valid @ModelAttribute("listings") Inventory song,
+			BindingResult br, Model model) {
+		if (br.hasErrors()) {
 			model.addAttribute("lists", this.inventoryService.getAllListings());
-			
+
 			return "listings";
 		}
-		song.setTotalPrice(song.getQuantityInStock()*song.getUnitPrice());
-		
-		System.out.println("PRINTING SONG IDDDD" +song.getId());
-		if(song.getId()==null ){
-
-		inventoryService.insertSong(song);
-		}
-		else{
-			System.out.println("IN EDITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+		song.setTotalPrice(song.getQuantityInStock() * song.getUnitPrice());
+		if (song.getId() == null) {
+			inventoryService.insertSong(song);
+		} else {
 			inventoryService.edit(song);
 		}
-		
 		return "redirect:/listings";
 	}
 
+	/**
+	 * Edit based on Id of song
+	 * 
+	 * @param id
+	 *            - input Id from jsp
+	 * @param model
+	 * @return listings page
+	 */
 	@RequestMapping(value = "/edit/{id}")
 	public String saveEdit(@PathVariable Integer id, Model model) {
-		  model.addAttribute("listings", this.inventoryService.getSong(id));
-	        model.addAttribute("lists", this.inventoryService.getAllListings());
-	        return "listings";
+		model.addAttribute("listings", this.inventoryService.getSong(id));
+		model.addAttribute("lists", this.inventoryService.getAllListings());
+		return "listings";
 	}
-	
+
+	/**
+	 * Remove the song with requested id
+	 * 
+	 * @param id
+	 *            - id from jsp to controller
+	 * @return to listings
+	 */
+
 	@RequestMapping(value = "/remove/{id}")
 	public String remove(@PathVariable Integer id) {
 		this.inventoryService.delete(id);
-        return "redirect:/listings";
+		return "redirect:/listings";
 	}
 
+	/**
+	 * search for song by song or ArtistName
+	 * 
+	 * @param model
+	 * @param songName
+	 *            - name from jsp. Looks for both song and Artist Name
+	 * @return to the page containing search results
+	 */
+	@RequestMapping(value = "/searchBySongOrArtistName", method = RequestMethod.POST)
+	public String searchBySongName(Model model,
+			@RequestParam("songName") String songName) {
 
-	@RequestMapping(value = "/searchBySongName", method = RequestMethod.POST)
-	public String searchBySongName(Model model,@RequestParam("songName") String songName){
-		System.out.println("songName is---- "+songName);
-		
-		
 		model.addAttribute("listings", new Inventory());
-		List<Inventory> list= this.inventoryService.search(1, songName);
-		model.addAttribute("searchBySongName", new Inventory());
+		List<Inventory> list = this.inventoryService.search(songName);
+		model.addAttribute("searchBySongOrArtistName", new Inventory());
 		model.addAttribute("lists", list);
-		return "/searchBySongName";
+		return "/searchBySongOrArtistName";
 	}
-
-	
-	@RequestMapping(value = "/searchByArtistName", method = RequestMethod.POST)
-	public String searchByArtistName(Model model,@RequestParam("artistName") String artistName){
-	System.out.println("songName is---- "+artistName);
-		model.addAttribute("listings", new Inventory());
-		List<Inventory> list= this.inventoryService.search(2, artistName);
-		model.addAttribute("searchBySongName", new Inventory());
-		model.addAttribute("lists", list);
-	return "/searchByArtistName";
-	}
-
 
 }

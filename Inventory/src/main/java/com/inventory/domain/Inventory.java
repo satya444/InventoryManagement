@@ -9,14 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inventory.annotations.CategoryType;
-import com.inventory.annotations.TestThis;
 
 /**
  * Entity bean with JPA annotations Hibernate provides JPA implementation
@@ -27,6 +25,8 @@ import com.inventory.annotations.TestThis;
 @Entity
 @Table(name = "inventory")
 public class Inventory implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -66,7 +66,7 @@
 <div>
 
 <h2>Search for Song By Song Name or Artist Name</h2>
-<sf:form method="POST"  action="/searchBySongName" commandName="listings">
+<sf:form method="POST"  action="/searchBySongOrArtistName" commandName="listings">
 <fieldset>
 <table >
 <tr>
