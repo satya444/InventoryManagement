@@ -44,11 +44,14 @@ public class MainController {
 			return "listings";
 		}
 		song.setTotalPrice(song.getQuantityInStock()*song.getUnitPrice());
+		
+		System.out.println("PRINTING SONG IDDDD" +song.getId());
 		if(song.getId()==null ){
 
 		inventoryService.insertSong(song);
 		}
 		else{
+			System.out.println("IN EDITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
 			inventoryService.edit(song);
 		}
 		
